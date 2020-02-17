@@ -13,7 +13,7 @@
     "images-grabber"
   ],
   "author": "Saiv46",
-  "license": "MIT",
+  "license": "ISC",
   "depedencies": {
     "got": "^10.5.5"
   }
