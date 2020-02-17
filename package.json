@@ -1,6 +1,6 @@
 {
   "name": "images-grabber-promise",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Promise wrapper for images-grabber",
   "main": "index.js",
   "scripts": {
@@ -16,5 +16,8 @@
   "license": "ISC",
   "depedencies": {
     "got": "^10.5.5"
+  },
+  "devDependencies": {
+    "images-grabber": "^3.1.3"
   }
 }
