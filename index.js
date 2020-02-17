@@ -57,4 +57,4 @@ fetchImages.vk = async function fetchVK(url, params = {}) {
 	return new VKSearch(params).getImages(url);
 }
 
-exports = fetchImages;
+module.exports = fetchImages;

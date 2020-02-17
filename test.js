@@ -1,8 +1,5 @@
 const { ok, equal, AssertionError } = require("assert");
-const {
-	fetchVK,
-	fetchReddit
-} = require("./index");
+const fetchImage = require("./index");
 
 async function test(label, before, ...funcs) {
 	console.time(label);
@@ -17,11 +14,11 @@ async function test(label, before, ...funcs) {
 }
 
 function testVK(name, url, ...funcs) {
-	return test(`VK ${name} (${url})`, () => fetchVK(url), ...funcs)
+	return test(`VK ${name} (${url})`, () => fetchImage.vk(url), ...funcs)
 }
 
 function testReddit(name, url, ...funcs) {
-	return test(`Reddit ${name} (${url})`, () => fetchReddit(url), ...funcs)
+	return test(`Reddit ${name} (${url})`, () => fetchImage.reddit(url), ...funcs)
 }
 
 (async () => {

@@ -1,18 +1,13 @@
-# Images-Grabber-Promise
+# images-grabber-promise
 
-Simplified wrapper for [images-grabber](https://www.npmjs.com/package/images-grabber)
+Simplified wrapper for [images-grabber](https://www.npmjs.com/package/images-grabber) which also supports VK and Reddit links.
+
+Install with `npm i images-grabber images-grabber-promise`
 
 ## Usage
 
-Install: `npm i images-grabber images-grabber-promise`
-
-Import: 
 ```js
 const fetchImage = require("images-grabber-promise");
-```
-
-Fetch image from Pixiv/Twitter/DeviantArt/VK/Reddit:
-```js
 let [ first, ...images ] = await fetchImage(url, {
 	// Provide options for services
 	pixiv: {
@@ -22,4 +17,6 @@ let [ first, ...images ] = await fetchImage(url, {
 		unsafe: false // true by default in Twitter/DeviantArt/Reddit
 	}
 });
+// OR
+let [ first, ...images ] = await fetchImage.twitter(url, { unsafe: false });
 ```
