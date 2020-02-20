@@ -1,8 +1,6 @@
-name: Node.js Package
+name: Package
 
-on:
-  release:
-    types: [created]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -12,6 +10,16 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
+      - name: Cache node modules
+        uses: actions/cache@v1
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            build-${{ env.cache-name }}-
+            build-
       - run: npm ci
       - run: npm test
 
@@ -27,7 +35,7 @@ jobs:
       - run: npm ci
       - run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
   publish-gpr:
     needs: build
@@ -38,7 +46,7 @@ jobs:
         with:
           node-version: 12
           registry-url: https://npm.pkg.github.com/
-          scope: '@your-github-username'
+          scope: '@saiv46'
       - run: npm ci
       - run: npm publish
         env:

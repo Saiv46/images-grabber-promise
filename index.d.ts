@@ -1,4 +1,5 @@
-export declare function fetchAny(url: String, params?: {
+export declare function fetchImages(url: String, params?: {
+	throw?: Boolean,
 	deviantart?: Object,
 	pixiv?: Object,
 	twitter?: Object,
@@ -25,4 +26,4 @@ export declare function fetchReddit(
 	url: String,
 	params?: { unsafe: Boolean }
 ): Promise<String[]>;
-export default fetchAny;
+export default fetchImages;
