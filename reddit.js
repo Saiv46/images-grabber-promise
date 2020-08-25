@@ -28,7 +28,7 @@ class RedditSearch {
 	async _fetchPost(id) {
 		try {
 			const res = await got(`http://reddit.com/${id}.json`).json();
-			return this._simplifyListing(response[0]);
+			return this._simplifyListing(res[0]);
 		} catch (err) {
 			if (err.response) {
 				const { message, error } = err.response;

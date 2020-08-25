@@ -3,14 +3,21 @@ const fetchImage = require("./index");
 
 async function test(label, before, ...funcs) {
 	console.time(label);
-	const fetched = await before();
 	try {
-		funcs.forEach(v => v(fetched));
-		console.log(`${label} OK`);
+		const fetched = await before();
+		try {
+			funcs.forEach(v => v(fetched));
+			console.log(`${label} OK`);
+			console.timeEnd(label);
+		} catch (e) {
+			console.error(`${label} FAIL`, e);
+			throw e;
+		}
 	} catch (e) {
-		console.error(`${label} FAIL`, e);
+		console.timeEnd(label);
+		throw e;
 	}
-	console.timeEnd(label);
+	
 }
 
 function testVK(name, url, ...funcs) {
@@ -51,5 +58,4 @@ function testReddit(name, url, ...funcs) {
 	} catch {
 		console.log(`VK doc throw OK`)
 	}
-})();
-
+})().catch(() => process.exit(1));

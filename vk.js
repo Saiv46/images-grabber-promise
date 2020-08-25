@@ -34,12 +34,12 @@ class VKSearch {
 			await this.login();
 		}
 		try {
-			const response = await got(`https://api.vk.com/method/${method}?` +
+			const { response } = await got(`https://api.vk.com/method/${method}?` +
 				new URLSearchParams({
 					...params,
 					access_token: this.accessToken,
 					test_mode: process.env.NODE_ENV === "development",
-					v: 5.103
+					v: 5.122
 				})
 			).json();
 			return Array.isArray(response) ? response[0] : response;
