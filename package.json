@@ -15,7 +15,9 @@
   "dependencies": {
     "got": "^11.5.2"
   },
-  "keywords": [ "images-grabber" ],
+  "keywords": [
+    "images-grabber"
+  ],
   "license": "ISC",
   "author": "Alexander Ivanov <saiv46@yandex.ru> (https://vk.com/saiv46)",
   "homepage": "https://github.com/Saiv46/images-grabber-promise#readme",
