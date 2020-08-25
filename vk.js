@@ -33,19 +33,23 @@ class VKSearch {
 		if (!this.isLoggedIn && method !== "utils.getServerTime") {
 			await this.login();
 		}
-		const { response, error } = await got(`https://api.vk.com/method/${method}?` +
-			new URLSearchParams({
-				...params,
-				access_token: this.accessToken,
-				test_mode: process.env.NODE_ENV === "development",
-				v: 5.103
-			})
-		).json();
-		if (error) {
-			const { error_code, error_msg } = error;
-			throw new Error(`#${error_code}: ${error_msg}`);
+		try {
+			const response = await got(`https://api.vk.com/method/${method}?` +
+				new URLSearchParams({
+					...params,
+					access_token: this.accessToken,
+					test_mode: process.env.NODE_ENV === "development",
+					v: 5.103
+				})
+			).json();
+			return Array.isArray(response) ? response[0] : response;
+		} catch (err) {
+			if (err.response) {
+				const { error_code, error_msg } = err.response;
+				throw new Error(`#${error_code}: ${error_msg}`);
+			}
+			throw err;
 		}
-		return Array.isArray(response) ? response[0] : response;
 	}
 
 	_selectPhoto(sizes) {

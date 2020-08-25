@@ -34,14 +34,16 @@ fetchImages.deviantart = async function fetchDA(url, params = { unsafe: true }) 
 
 fetchImages.pixiv = async function fetchPixiv(url, params = {}) {
 	if (!params.username && !params.password) {
-		defaultWarned = true;
 		params.username = "imagegrabberbot_defaultaccount";
 		params.password = "IvkC2sTAOa2is0E5";
-		if (!defaultWarned) console.warn(
-			`Warning: You're using default credentials provided `+
-			`by developer and intended for developing purposes, please register `+
-			`your app at https://vk.com/editapp?act=create`
-		);
+		if (!defaultWarned) {
+			defaultWarned = true;
+			console.warn(
+				`Warning: You're using default credentials provided `+
+				`by developer and intended for developing purposes, please register `+
+				`your account at https://accounts.pixiv.net/signup`
+			);
+		}
 	}
 	return new PixivSearch(params).getImages(url);
 };
@@ -56,13 +58,15 @@ fetchImages.reddit = async function fetchReddit(url, params = { unsafe: true }) 
 
 fetchImages.vk = async function fetchVK(url, params = {}) { 
 	if (!params.accessToken) {
-		defaultWarned = true;
 		params.accessToken = "cafe74bccafe74bccafe74bc4eca91c6ccccafecafe74bc94b866f3a9acc4324c34d32e";
-		if (!defaultWarned) console.warn(
-			`Warning: You're using default access token provided `+
-			`by developer and intended for developing purposes, please register `+
-			`your app at https://vk.com/editapp?act=create`
-		);
+		if (!defaultWarned) {
+			defaultWarned = true;
+			console.warn(
+				`Warning: You're using default access token provided `+
+				`by developer and intended for developing purposes, please register `+
+				`your app at https://vk.com/editapp?act=create`
+			);
+		}
 	}
 	return new VKSearch(params).getImages(url);
 };

@@ -26,12 +26,17 @@ class RedditSearch {
 	}
 
 	async _fetchPost(id) {
-		const response = await got(`http://reddit.com/${id}.json`).json();
-		if (response.error) {
-			const { message, error } = response;
-			throw new Error(`#${error}: ${message}`);
+		try {
+			const res = await got(`http://reddit.com/${id}.json`).json();
+			return this._simplifyListing(response[0]);
+		} catch (err) {
+			if (err.response) {
+				const { message, error } = err.response;
+				throw new Error(`#${error}: ${message}`);
+			}
+			throw err;
 		}
-		return this._simplifyListing(response[0]);
+		
 	}
 
 	async getImages(url) {

@@ -1,7 +1,7 @@
 images-grabber-promise
 =======================================
 
-![Status](https://github.com/Saiv46/images-grabber-promise/workflows/Package/badge.svg)
+[![Status](https://github.com/Saiv46/images-grabber-promise/workflows/Package/badge.svg)](https://github.com/Saiv46/images-grabber-promise/actions)
 
 Promise wrapper for [images-grabber](https://www.npmjs.com/package/images-grabber) with some features.
 
