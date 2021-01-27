@@ -30,29 +30,30 @@ function testReddit(name, url, ...funcs) {
 
 (async () => {
 	const is = {
-		link: a => ok(a.every(v => v.startsWith("https://"))), 
-		jpg: a => is.link(a) && ok(a.every(v => v.endsWith(".jpg"))),
-		png: a => is.link(a) && ok(a.every(v => v.endsWith(".png")))
+		link: a => ok(a.every(v => { try { new URL(v); return true } catch (e) { return false } }), 
+		jpg: a => is.link(a) && ok(a.every(v => new URL(v).pathname.endsWith(".jpg"))),
+		png: a => is.link(a) && ok(a.every(v => new URL(v).pathname.endsWith(".png")))
 	};
 
 	await testReddit("full link", "https://www.reddit.com/r/DDLC/comments/8c8k2v/only_js_function_which_works_correctly/", is.png);
 	await testReddit("short link", "https://redd.it/8kimm3", is.png);
 
-	await testVK("wall", "https://vk.com/wall-168965593_1604", is.jpg, w => 
-		ok([
+	await testVK("wall", "https://vk.com/wall-168965593_1604", is.jpg, w => {
+		[
 			"/c857632/v857632531/173335/iUlssMo6Fn8.jpg",
 			"/c857632/v857632531/17333f/Nq76kMBKtmc.jpg",
 			"/c857632/v857632531/173349/vbU7C8ujb7Y.jpg"
-		].every((v, i) => w[i].endsWith(v)), "Filename has changed")
+		].every((v, i) => equal(new URL(w[i]).pathname, v))
+	}
 	);
 	await testVK("photo", "https://vk.com/photo1_456256890", is.jpg, ([ p ]) => 
-		ok(p.endsWith("/c639230/v639230001/fabe/yU0Q2Knm9PY.jpg"), "Filename has changed")
+		equal(new URL(p).pathname, "/c639230/v639230001/fabe/yU0Q2Knm9PY.jpg")
 	);
 	await testVK("album", "https://vk.com/album393055078_0", is.jpg);
 	
 	try {
 		await testVK("doc throws", "https://vk.com/doc393055078_536126416", ([ p ]) => 
-			equal(p, "https://psv4.userapi.com/c848216/u76071059/docs/d17/04a0e3641e66/gachiteam.gif")
+			equal(new URL(p).pathname, "/c848216/u76071059/docs/d17/93b993ab8078/gachiteam.gif")
 		);
 		throw new AssertionError("doc should throw with service token");
 	} catch {
