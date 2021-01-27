@@ -28,24 +28,24 @@ function testReddit(name, url, ...funcs) {
 	return test(`Reddit ${name} (${url})`, () => fetchImage.reddit(url), ...funcs)
 }
 
-(async () => {
-	const is = {
-		link: new URL(v),
-		linkSafe: v => { try { is.link(v); return true } catch (e) { return false } },
-		jpg: v => is.link(v) && ok(new URL(v).pathname.endsWith(".jpg"), `URL path "${v}" not ends with .jpg`),
-		png: v => is.link(v) && ok(new URL(v).pathname.endsWith(".png"), `URL path "${v}" not ends with .png`),
-		samePath: (a, b) => equal(is.linkSafe(a) ? new URL(a).pathname : a, is.linkSafe(b) ? new URL(b).pathname : b)
+const is = {
+	link: v => new URL(v),
+	linkSafe: v => { try { is.link(v); return true } catch (e) { return false } },
+	jpg: v => is.link(v) && ok(new URL(v).pathname.endsWith(".jpg"), `URL path "${v}" not ends with .jpg`),
+	png: v => is.link(v) && ok(new URL(v).pathname.endsWith(".png"), `URL path "${v}" not ends with .png`),
+	samePath: (a, b) => equal(is.linkSafe(a) ? new URL(a).pathname : a, is.linkSafe(b) ? new URL(b).pathname : b)
+};
+is.array = {};
+for (const name in is) {
+	const func = is[name];
+	if (typeof func !== 'function') continue;
+	is.array[name] = a => {
+		ok(Array.isArray(a), "Result is not an array");
+		a.forEach(v => func(v));
 	};
-	is.array = {};
-	for (const name of is) {
-		const func = is[name];
-		if (typeof func !== 'function') continue;
-		is.array[name] = a => {
-			ok(Array.isArray(a), "Result is not an array");
-			a.forEach(v => func(v));
-		};
-	}
+}
 
+(async () => {
 	await testReddit("full link", "https://www.reddit.com/r/DDLC/comments/8c8k2v/only_js_function_which_works_correctly/", is.array.png);
 	await testReddit("short link", "https://redd.it/8kimm3", is.array.png);
 
@@ -62,8 +62,7 @@ function testReddit(name, url, ...funcs) {
 	
 	try {
 		await testVK("doc throws", "https://vk.com/doc393055078_536126416", ([ p ]) => is.samePath(p, "/c848216/u76071059/docs/d17/93b993ab8078/gachiteam.gif"));
-		throw new AssertionError("doc should throw with service token");
 	} catch {
 		console.log(`VK doc throw OK`)
 	}
-})().catch(() => process.exit(1));
+})().catch(e => (console.error('Uncaught error', e), process.exit(1)));
